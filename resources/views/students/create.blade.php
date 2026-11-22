@@ -1,185 +1,164 @@
+```blade
+<x-app-layout>
+    <x-slot name="header">
+        <div>
+            <p class="text-sm font-semibold uppercase tracking-widest text-purple-400">
+                Student Management System
+            </p>
+            <h2 class="mt-2 text-2xl font-bold text-white">
+                Nouvel étudiant
+            </h2>
+        </div>
+    </x-slot>
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter un étudiant</title>
+    <div class="mx-auto max-w-4xl space-y-8">
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+        {{-- Page heading --}}
+        <div>
+            <h1 class="text-3xl font-extrabold text-white">
+                Ajouter un étudiant
+            </h1>
+            <p class="mt-2 text-sm text-gray-400">
+                Remplissez les informations ci-dessous pour inscrire un nouvel étudiant.
+            </p>
+        </div>
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f8f4f2;
-            color: #332b2b;
-        }
+        {{-- Form card --}}
+        <div class="overflow-hidden rounded-2xl border border-white/10 bg-[#151522] shadow-xl">
 
-        header {
-            background: #681f32;
-            color: white;
-            padding: 25px 40px;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 26px;
-        }
-
-        .container {
-            max-width: 750px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .form-box {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 18px #0000000d;
-        }
-
-        h2 {
-            color: #681f32;
-            margin-top: 0;
-            margin-bottom: 25px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 7px;
-            font-size: 15px;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #a83250;
-        }
-
-        .add-button {
-            background: #a83250;
-            color: white;
-            border: none;
-            padding: 13px 22px;
-            border-radius: 7px;
-            cursor: pointer;
-            font-size: 15px;
-        }
-
-        .add-button:hover {
-            background: #681f32;
-        }
-
-        .back {
-            display: inline-block;
-            margin-top: 20px;
-            color: #681f32;
-            text-decoration: none;
-        }
-
-        .errors {
-            background: #ffe5e5;
-            color: #a00000;
-            padding: 12px;
-            border-radius: 7px;
-            margin-bottom: 20px;
-        }
-
-        @media (max-width: 600px) {
-            header {
-                padding: 20px;
-            }
-
-            .form-box {
-                padding: 20px;
-            }
-        }
-    </style>
-</head>
-
-<body>
-
-<header>
-    <h1>Gestion des étudiants</h1>
-</header>
-
-<div class="container">
-
-    <div class="form-box">
-
-        <h2>Ajouter un étudiant</h2>
-
-        @if ($errors->any())
-            <div class="errors">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <form action="{{ route('students.store') }}" method="POST">
-            @csrf
-
-            <div class="form-group">
-                <label>Nom :</label>
-                <input type="text" name="last_name"
-                       value="{{ old('last_name') }}" required>
+            <div class="border-b border-white/10 px-8 py-6">
+                <div class="flex items-center gap-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-600/20 text-2xl text-purple-400">
+                        ♙
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">
+                            Informations personnelles
+                        </h3>
+                        <p class="mt-1 text-sm text-gray-400">
+                            Les champs marqués * sont obligatoires.
+                        </p>
+                    </div>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>Prénom :</label>
-                <input type="text" name="first_name"
-                       value="{{ old('first_name') }}" required>
+            <div class="p-8">
+
+                {{-- Validation errors --}}
+                @if ($errors->any())
+                    <div class="mb-6 rounded-xl border border-red-500/20 bg-red-500/10 p-5 text-sm text-red-300">
+                        <p class="mb-2 font-bold">Veuillez corriger les erreurs suivantes :</p>
+                        <ul class="list-inside list-disc space-y-1">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form action="{{ route('students.store') }}" method="POST" class="space-y-6">
+                    @csrf
+
+                    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+
+                        {{-- Last name --}}
+                        <div>
+                            <label for="last_name" class="mb-2 block text-sm font-semibold text-gray-300">
+                                Nom <span class="text-purple-400">*</span>
+                            </label>
+                            <input
+                                id="last_name"
+                                type="text"
+                                name="last_name"
+                                value="{{ old('last_name') }}"
+                                placeholder="Entrez le nom"
+                                required
+                                class="w-full rounded-xl border border-white/10 bg-[#0b0b12] px-4 py-3 text-white placeholder-gray-500 outline-none transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20"
+                            >
+                        </div>
+
+                        {{-- First name --}}
+                        <div>
+                            <label for="first_name" class="mb-2 block text-sm font-semibold text-gray-300">
+                                Prénom <span class="text-purple-400">*</span>
+                            </label>
+                            <input
+                                id="first_name"
+                                type="text"
+                                name="first_name"
+                                value="{{ old('first_name') }}"
+                                placeholder="Entrez le prénom"
+                                required
+                                class="w-full rounded-xl border border-white/10 bg-[#0b0b12] px-4 py-3 text-white placeholder-gray-500 outline-none transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20"
+                            >
+                        </div>
+
+                        {{-- Email --}}
+                        <div class="md:col-span-2">
+                            <label for="email" class="mb-2 block text-sm font-semibold text-gray-300">
+                                Adresse email <span class="text-purple-400">*</span>
+                            </label>
+                            <input
+                                id="email"
+                                type="email"
+                                name="email"
+                                value="{{ old('email') }}"
+                                placeholder="exemple@email.com"
+                                required
+                                class="w-full rounded-xl border border-white/10 bg-[#0b0b12] px-4 py-3 text-white placeholder-gray-500 outline-none transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20"
+                            >
+                        </div>
+
+                        {{-- Phone --}}
+                        <div>
+                            <label for="phone" class="mb-2 block text-sm font-semibold text-gray-300">
+                                Téléphone
+                            </label>
+                            <input
+                                id="phone"
+                                type="tel"
+                                name="phone"
+                                value="{{ old('phone') }}"
+                                placeholder="+212 6XX XX XX XX"
+                                class="w-full rounded-xl border border-white/10 bg-[#0b0b12] px-4 py-3 text-white placeholder-gray-500 outline-none transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20"
+                            >
+                        </div>
+
+                        {{-- Birth date --}}
+                        <div>
+                            <label for="birth_date" class="mb-2 block text-sm font-semibold text-gray-300">
+                                Date de naissance
+                            </label>
+                            <input
+                                id="birth_date"
+                                type="date"
+                                name="birth_date"
+                                value="{{ old('birth_date') }}"
+                                max="{{ date('Y-m-d') }}"
+                                class="w-full rounded-xl border border-white/10 bg-[#0b0b12] px-4 py-3 text-gray-300 outline-none transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20"
+                            >
+                        </div>
+
+                    </div>
+
+                    {{-- Buttons --}}
+                    <div class="flex flex-col-reverse gap-3 border-t border-white/10 pt-6 sm:flex-row sm:justify-end">
+
+                        <a href="{{ url('/students') }}"
+                           class="inline-flex items-center justify-center rounded-xl border border-white/10 px-6 py-3 text-sm font-semibold text-gray-300 transition hover:bg-white/5 hover:text-white">
+                            Annuler
+                        </a>
+
+                        <button type="submit"
+                                class="inline-flex items-center justify-center gap-2 rounded-xl bg-purple-600 px-7 py-3 text-sm font-bold text-white shadow-lg shadow-purple-600/20 transition hover:bg-purple-500">
+                            <span>＋</span>
+                            Ajouter l'étudiant
+                        </button>
+
+                    </div>
+                </form>
             </div>
-
-            <div class="form-group">
-                <label>Email :</label>
-                <input type="email" name="email"
-                       value="{{ old('email') }}" required>
-            </div>
-
-            <div class="form-group">
-                <label>Téléphone :</label>
-                <input type="text" name="phone"
-                       value="{{ old('phone') }}">
-            </div>
-
-            <div class="form-group">
-                <label>Date de naissance :</label>
-                <input type="date" name="birth_date"
-                       value="{{ old('birth_date') }}">
-            </div>
-
-            <button type="submit" class="add-button">
-                Ajouter l'étudiant
-            </button>
-
-        </form>
-
-        <a href="{{ url('/students') }}" class="back">
-            ← Retour à la liste des étudiants
-        </a>
-
+        </div>
     </div>
-
-</div>
-
-</body>
-</html>
+</x-app-layout>
+```
