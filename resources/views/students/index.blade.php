@@ -24,7 +24,7 @@
                 </p>
             </div>
 
-            @if(auth()->user()->role === 'admin')
+            @if(auth()->check() && auth()->user()->role === 'admin')
                 <a href="{{ route('students.create') }}"
                    class="inline-flex items-center justify-center gap-2 rounded-xl bg-purple-600 px-5 py-3 font-semibold text-white shadow-lg shadow-purple-600/20 transition hover:bg-purple-500">
                     <span class="text-xl">＋</span>
@@ -116,7 +116,7 @@
                                             Voir
                                         </a>
 
-                                        @if(auth()->user()->role === 'admin')
+                                        @if(auth()->check() && auth()->user()->role === 'admin')
                                             <a href="{{ route('students.edit', $student->id) }}"
                                                class="rounded-lg border border-blue-500/20 bg-blue-500/10 px-3 py-2 text-xs font-semibold text-blue-300 transition hover:bg-blue-500/20">
                                                 Modifier

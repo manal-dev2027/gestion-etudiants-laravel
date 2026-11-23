@@ -130,7 +130,7 @@
                         Retour à la liste
                     </a>
 
-                    @if(auth()->user()->role === 'admin')
+                    @if(auth()->check() && auth()->user()->role === 'admin')
                         <a href="{{ route('students.edit', $student->id) }}"
                            class="inline-flex items-center justify-center gap-2 rounded-xl bg-purple-600 px-7 py-3 text-sm font-bold text-white shadow-lg shadow-purple-600/20 transition hover:bg-purple-500">
                             ✎ Modifier les informations
